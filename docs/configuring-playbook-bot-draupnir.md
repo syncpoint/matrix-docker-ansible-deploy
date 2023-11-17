@@ -20,7 +20,7 @@ You can use the playbook to [register a new user](registering-users.md):
 ansible-playbook -i inventory/hosts setup.yml --extra-vars='username=bot.draupnir password=PASSWORD_FOR_THE_BOT admin=no' --tags=register-user
 ```
 
-If you would like draupnir to be able to deactivate users, move aliases, shutdown rooms, etc then it must be a server admin so you need to change `admin=no` to `admin=yes` in the command above.
+If you would like draupnir to be able to deactivate users, move aliases, shutdown rooms, show abuse reports ([see below](#abuse-reports)), etc then it must be a server admin so you need to change `admin=no` to `admin=yes` in the command above.
 
 
 ## 2. Get an access token
@@ -32,9 +32,9 @@ Refer to the documentation on [how to obtain an access token](obtaining-access-t
 
 You will need to prevent Synapse from rate limiting the bot's account. This is not an optional step. If you do not do this step draupnir will crash. This can be done using Synapse's [admin API](https://matrix-org.github.io/synapse/latest/admin_api/user_admin_api.html#override-ratelimiting-for-users). Please ask for help if you are uncomfortable with these steps or run into issues.
 
-If your Synapse Admin API is exposed to the internet for some reason like running the Synapse Admin Role [Link](docs/configuring-playbook-synapse-admin.md) or running `matrix_nginx_proxy_proxy_matrix_client_api_forwarded_location_synapse_admin_api_enabled: true` in your playbook config. If your API is not externally exposed you should still be able to on the local host for your synapse run these commands. 
+If your Synapse Admin API is exposed to the internet for some reason like running the Synapse Admin Role [Link](/docs/configuring-playbook-synapse-admin.md) or running `matrix_nginx_proxy_proxy_matrix_client_api_forwarded_location_synapse_admin_api_enabled: true` in your playbook config. If your API is not externally exposed you should still be able to on the local host for your synapse run these commands. 
 
-The following command works on semi up to date Windows 10 installs and All Windows 11 installations and other systems that ship curl. `curl --header "Authorization: Bearer <access_token>" -X DELETE https://matrix.example.com/_synapse/admin/v1/users/@example:example.com/override_ratelimit` Replace `@example:example.com` with the MXID of your Draupnir and example.com with your homeserver domain. You can easily obtain an access token for a homeserver admin account the same way you can obtain an access token for Draupnir it self. If you made Draupnir Admin you can just use the Draupnir token.
+The following command works on semi up to date Windows 10 installs and All Windows 11 installations and other systems that ship curl. `curl --header "Authorization: Bearer <access_token>" -X POST https://matrix.example.com/_synapse/admin/v1/users/@example:example.com/override_ratelimit` Replace `@example:example.com` with the MXID of your Draupnir and example.com with your homeserver domain. You can easily obtain an access token for a homeserver admin account the same way you can obtain an access token for Draupnir it self. If you made Draupnir Admin you can just use the Draupnir token.
 
 
 
@@ -77,7 +77,7 @@ ansible-playbook -i inventory/hosts setup.yml --tags=setup-all,start
 
 ## Usage
 
-You can refer to the upstream [documentation](https://github.com/the-draupnir-project/Draupnir) for additional ways to use and configure draupnir. Check out their [quickstart guide](https://github.com/matrix-org/draupnir/blob/main/docs/moderators.md#quick-usage) for some basic commands you can give to the bot.
+You can refer to the upstream [documentation](https://github.com/the-draupnir-project/Draupnir) for additional ways to use and configure draupnir. Check out their [quickstart guide](https://github.com/the-draupnir-project/Draupnir/blob/main/docs/moderators.md#quick-usage) for some basic commands you can give to the bot.
 
 You can configure additional options by adding the `matrix_bot_draupnir_configuration_extension_yaml` variable to your `inventory/host_vars/matrix.DOMAIN/vars.yml` file.
 
@@ -93,4 +93,18 @@ matrix_bot_draupnir_configuration_extension_yaml: |
   # If you need something more special, you can take full control by
   # completely redefining `matrix_bot_draupnir_configuration_yaml`.
   recordIgnoredInvites: true
+```
+
+## Abuse Reports
+
+Draupnir supports two methods to receive reports in the management room.
+
+The first method intercepts the report API endpoint of the client-server API, which requires integration with the reverse proxy in front of the homeserver.
+While this playbook uses reverse proxies, it does not yet implement this.
+
+The other method polls an synapse admin API endpoint and is hence only available when using synapse and when the Draupnir user is an admin user (see step 1).
+To enable it, set `pollReports: true` in Draupnir's config:
+```yaml
+matrix_bot_draupnir_configuration_extension_yaml: |
+  pollReports: true
 ```

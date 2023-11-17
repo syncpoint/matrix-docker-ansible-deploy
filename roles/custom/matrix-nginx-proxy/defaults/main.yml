@@ -1,7 +1,8 @@
 ---
 # Project source code URL: https://github.com/nginx/nginx
 matrix_nginx_proxy_enabled: true
-matrix_nginx_proxy_version: 1.25.2-alpine
+# renovate: datasource=docker depName=nginx
+matrix_nginx_proxy_version: 1.25.3-alpine
 
 # We use an official nginx image, which we fix-up to run unprivileged.
 # An alternative would be an `nginxinc/nginx-unprivileged` image, but
@@ -307,6 +308,7 @@ matrix_nginx_proxy_proxy_matrix_metrics_basic_auth_path: "{{ matrix_nginx_proxy_
 # To avoid using this, use `matrix_nginx_proxy_proxy_matrix_metrics_basic_auth_raw_content` instead of supplying username/password.
 # Learn more in: `roles/custom/matrix-nginx-proxy/tasks/nginx-proxy/setup_metrics_auth.yml`.
 matrix_nginx_proxy_proxy_matrix_metrics_basic_auth_apache_container_image: "{{ matrix_container_global_registry_prefix }}httpd:{{ matrix_nginx_proxy_proxy_matrix_metrics_basic_auth_apache_container_image_tag }}"
+# renovate: datasource=docker depName=httpd
 matrix_nginx_proxy_proxy_matrix_metrics_basic_auth_apache_container_image_tag: "2.4.54-alpine3.16"
 matrix_nginx_proxy_proxy_matrix_metrics_basic_auth_apache_container_force_pull: "{{ matrix_nginx_proxy_proxy_matrix_metrics_basic_auth_apache_container_image_tag.endswith(':latest') }}"
 
@@ -329,12 +331,24 @@ matrix_nginx_proxy_proxy_matrix_user_directory_search_enabled: false
 matrix_nginx_proxy_proxy_matrix_user_directory_search_addr_with_container: "matrix-ma1sd:{{ matrix_ma1sd_container_port }}"
 matrix_nginx_proxy_proxy_matrix_user_directory_search_addr_sans_container: "127.0.0.1:{{ matrix_ma1sd_container_port }}"
 
+# Controls whether the user directory search API will be URL-rewritten (/_matrix/client/v3/user_directory/search -> /_matrix/client/r0/user_directory/search).
+# This is to assist identity servers which only handle the r0 endpoints.
+# The v3 endpoints are the same (spec-wise), so they can usually be redirected without downsides.
+# If this is disabled, API requests will be forwarded as-is, without any URL rewriting.
+matrix_nginx_proxy_proxy_matrix_user_directory_search_v3_to_r0_redirect_enabled: true
+
 # Controls whether proxying for 3PID-based registration (`/_matrix/client/r0/register/(email|msisdn)/requestToken`) should be done (on the matrix domain).
 # This allows another service to control registrations involving 3PIDs.
 # To learn more, see: https://github.com/ma1uta/ma1sd/blob/master/docs/features/registration.md
 matrix_nginx_proxy_proxy_matrix_3pid_registration_enabled: false
 matrix_nginx_proxy_proxy_matrix_3pid_registration_addr_with_container: "matrix-ma1sd:{{ matrix_ma1sd_container_port }}"
 matrix_nginx_proxy_proxy_matrix_3pid_registration_addr_sans_container: "127.0.0.1:{{ matrix_ma1sd_container_port }}"
+
+# Controls whether the user directory search API will be URL-rewritten (/_matrix/client/v3/register/(email|msisdn)/requestToken -> /_matrix/client/r0/register/(email|msisdn)/requestToken).
+# This is to assist identity servers which only handle the r0 endpoints.
+# The v3 endpoints are the same (spec-wise), so they can usually be redirected without downsides.
+# If this is disabled, API requests will be forwarded as-is, without any URL rewriting.
+matrix_nginx_proxy_proxy_matrix_3pid_registration_v3_to_r0_redirect_enabled: true
 
 # Controls whether proxying for the Identity API (`/_matrix/identity`) should be done (on the matrix domain)
 matrix_nginx_proxy_proxy_matrix_identity_api_enabled: false

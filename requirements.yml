@@ -4,7 +4,7 @@
   version: v1.0.0-1
   name: auxiliary
 - src: git+https://gitlab.com/etke.cc/roles/backup_borg.git
-  version: v1.2.5-1.8.2-0
+  version: v1.2.6-1.8.4-0
 - src: git+https://github.com/devture/com.devture.ansible.role.container_socket_proxy.git
   version: v0.1.1-2
 - src: git+https://github.com/devture/com.devture.ansible.role.docker_sdk_for_python.git
@@ -16,9 +16,9 @@
 - src: git+https://github.com/devture/com.devture.ansible.role.playbook_state_preserver.git
   version: ff2fd42e1c1a9e28e3312bbd725395f9c2fc7f16
 - src: git+https://github.com/devture/com.devture.ansible.role.postgres.git
-  version: v15.4-1
+  version: v16.1-0
 - src: git+https://github.com/devture/com.devture.ansible.role.postgres_backup.git
-  version: a0cc7c1c696872ba8880d9c5e5a54098de825030
+  version: d2c2585fe3f5ebf39045bc90c97ee160e1341594
 - src: git+https://github.com/devture/com.devture.ansible.role.systemd_docker_base.git
   version: v1.0.0-0
 - src: git+https://github.com/devture/com.devture.ansible.role.systemd_service_manager.git
@@ -26,28 +26,29 @@
 - src: git+https://github.com/devture/com.devture.ansible.role.timesync.git
   version: v1.0.0-0
 - src: git+https://github.com/devture/com.devture.ansible.role.traefik.git
-  version: v2.10.4-1
+  version: v2.10.5-2
 - src: git+https://github.com/devture/com.devture.ansible.role.traefik_certs_dumper.git
   version: v2.8.1-0
 - src: git+https://gitlab.com/etke.cc/roles/etherpad.git
-  version: v1.9.2-1
+  version: v1.9.3-0
 - src: git+https://github.com/geerlingguy/ansible-role-docker
-  version: 6.2.0
+  version: 7.0.2
   name: geerlingguy.docker
 - src: git+https://gitlab.com/etke.cc/roles/grafana.git
-  version: v10.1.1-0
+  version: v10.2.1-0
 - src: git+https://github.com/mother-of-all-self-hosting/ansible-role-jitsi.git
-  version: v8922-1
+  version: v9078-0
   name: jitsi
 - src: git+https://gitlab.com/etke.cc/roles/ntfy.git
   version: v2.7.0-2
 - src: git+https://github.com/mother-of-all-self-hosting/ansible-role-prometheus.git
-  version: v2.47.0-0
+  version: v2.48.0-0
   name: prometheus
-- src: git+https://gitlab.com/etke.cc/roles/prometheus_node_exporter.git
-  version: v1.6.1-0
+- src: git+https://github.com/mother-of-all-self-hosting/ansible-role-prometheus-node-exporter.git
+  version: v1.7.0-0
+  name: prometheus_node_exporter
 - src: git+https://github.com/mother-of-all-self-hosting/ansible-role-prometheus-postgres-exporter.git
-  version: v0.13.2-0
+  version: v0.14.0-0
   name: prometheus_postgres_exporter
 - src: git+https://gitlab.com/etke.cc/roles/redis.git
   version: v7.2.0-0
