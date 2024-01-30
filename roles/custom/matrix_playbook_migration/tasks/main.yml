@@ -6,11 +6,51 @@
   block:
     - ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
 
+- when: ansible_os_family == 'Debian' and matrix_playbook_migration_debian_signedby_migration_enabled | bool
+  tags:
+    - setup-all
+    - install-all
+    - setup-docker
+    - install-docker
+  block:
+    - ansible.builtin.include_tasks: "{{ role_path }}/tasks/debian_docker_signedby_migration.yml"
+
 - tags:
     - setup-all
     - install-all
   block:
     - ansible.builtin.include_tasks: "{{ role_path }}/tasks/cleanup_usr_local_bin.yml"
+
+- tags:
+    - setup-all
+    - install-all
+  block:
+    - ansible.builtin.include_tasks: "{{ role_path }}/tasks/cleanup_matrix_static_files_well_known.yml"
+
+- tags:
+    - setup-all
+    - install-all
+  block:
+    - ansible.builtin.include_tasks: "{{ role_path }}/tasks/cleanup_matrix_static_files_well_known.yml"
+
+- tags:
+    - setup-all
+    - install-all
+  block:
+    - ansible.builtin.include_tasks: "{{ role_path }}/tasks/uninstall_matrix_nginx_proxy.yml"
+
+- when: matrix_playbook_migration_matrix_ssl_uninstallation_enabled | bool
+  tags:
+    - setup-all
+    - install-all
+  block:
+    - ansible.builtin.include_tasks: "{{ role_path }}/tasks/uninstall_matrix_ssl.yml"
+
+- tags:
+    - setup-all
+    - install-all
+  block:
+    - ansible.builtin.include_tasks: "{{ role_path }}/tasks/migrate_matrix_mailer.yml"
 
 - when: devture_traefik_enabled | bool
   tags:

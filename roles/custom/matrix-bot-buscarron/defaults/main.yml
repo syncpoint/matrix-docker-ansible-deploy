@@ -39,16 +39,17 @@ matrix_bot_buscarron_container_network: matrix-bot-buscarron
 # A list of additional container networks that the container would be connected to.
 # The role does not create these networks, so make sure they already exist.
 # Use this to expose this container to another reverse proxy, which runs in a different container network.
-matrix_bot_buscarron_container_additional_networks: []
+matrix_bot_buscarron_container_additional_networks: "{{ matrix_bot_buscarron_container_additional_networks_auto + matrix_bot_buscarron_container_additional_networks_custom }}"
+matrix_bot_buscarron_container_additional_networks_auto: []
+matrix_bot_buscarron_container_additional_networks_custom: []
 
-# enable basic auth for metrics
-matrix_bot_buscarron_basicauth_enabled: false
-# temporary file name on the host that runs ansible
-matrix_bot_buscarron_basicauth_file: "/tmp/matrix_bot_buscarron_htpasswd"
-# username
-matrix_bot_buscarron_basicauth_user: ''
-# password
-matrix_bot_buscarron_basicauth_password: ''
+# /metrics login
+matrix_bot_buscarron_metrics_login: ''
+# /metrics password
+matrix_bot_buscarron_metrics_password: ''
+# /metrics allowed ips
+matrix_bot_buscarron_metrics_ips: []
+
 
 # matrix_bot_buscarron_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the container.
 # See `../templates/labels.j2` for details.
@@ -86,7 +87,10 @@ matrix_bot_buscarron_container_labels_additional_labels: ''
 matrix_bot_buscarron_container_extra_arguments: []
 
 # List of systemd services that matrix-bot-buscarron.service depends on
-matrix_bot_buscarron_systemd_required_services_list: ['docker.service']
+matrix_bot_buscarron_systemd_required_services_list: "{{ matrix_bot_buscarron_systemd_required_services_list_default + matrix_bot_buscarron_systemd_required_services_list_auto + matrix_bot_buscarron_systemd_required_services_list_custom }}"
+matrix_bot_buscarron_systemd_required_services_list_default: ['docker.service']
+matrix_bot_buscarron_systemd_required_services_list_auto: []
+matrix_bot_buscarron_systemd_required_services_list_custom: []
 
 # List of systemd services that matrix-bot-buscarron.service wants
 matrix_bot_buscarron_systemd_wanted_services_list: []
@@ -136,7 +140,7 @@ matrix_bot_buscarron_login: "bot.buscarron"
 matrix_bot_buscarron_password: ''
 
 # the homeserver URL, uses internal synapse container address by default
-matrix_bot_buscarron_homeserver: "{{ matrix_homeserver_container_url }}"
+matrix_bot_buscarron_homeserver: ""
 
 # forms configuration
 matrix_bot_buscarron_forms: []

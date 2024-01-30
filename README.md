@@ -17,7 +17,7 @@ We run all services in [Docker](https://www.docker.com/) containers (see [the co
 
 This Ansible playbook tries to make self-hosting and maintaining a Matrix server fairly easy. Still, running any service smoothly requires knowledge, time and effort.
 
-If you like the [FOSS](https://en.wikipedia.org/wiki/Free_and_open-source_software) spirit of this Ansible playbook, but prefer to put the responsibility on someone else, you can also [get a managed Matrix server from etke.cc](https://etke.cc/) - a service built on top of this Ansible playbook, which can help you run a Matrix server with ease.
+If you like the [FOSS](https://en.wikipedia.org/wiki/Free_and_open-source_software) spirit of this Ansible playbook, but prefer to put the responsibility on someone else, you can also [get a managed Matrix server from etke.cc](https://etke.cc?utm_source=github&utm_medium=readme&utm_campaign=mdad) - a service built on top of this Ansible playbook, which can help you run a Matrix server with ease.
 
 If you like learning and experimentation, but would rather reduce future maintenance effort, you can even go for a hybrid approach - self-hosting manually using this Ansible playbook at first and then transferring server maintenance to etke.cc at a later time.
 
@@ -37,7 +37,7 @@ The homeserver is the backbone of your matrix system. Choose one from the follow
 
 | Name | Default? | Description | Documentation |
 | ---- | -------- | ----------- | ------------- |
-| [Synapse](https://github.com/matrix-org/synapse) | ✓ | Storing your data and managing your presence in the [Matrix](http://matrix.org/) network | [Link](docs/configuring-playbook-synapse.md) |
+| [Synapse](https://github.com/element-hq/synapse) | ✓ | Storing your data and managing your presence in the [Matrix](http://matrix.org/) network | [Link](docs/configuring-playbook-synapse.md) |
 | [Conduit](https://conduit.rs) | x | Storing your data and managing your presence in the [Matrix](http://matrix.org/) network. Conduit is a lightweight open-source server implementation of the Matrix Specification with a focus on easy setup and low system requirements | [Link](docs/configuring-playbook-conduit.md) |
 | [Dendrite](https://github.com/matrix-org/dendrite) | x | Storing your data and managing your presence in the [Matrix](http://matrix.org/) network. Dendrite is a second-generation Matrix homeserver written in Go, an alternative to Synapse. | [Link](docs/configuring-playbook-dendrite.md) |
 
@@ -48,7 +48,7 @@ Web clients for matrix that you can host on your own domains.
 | Name | Default? | Description | Documentation |
 | ---- | -------- | ----------- | ------------- |
 | [Element](https://app.element.io/) | ✓ | Web UI, which is configured to connect to your own Synapse server by default | [Link](docs/configuring-playbook-client-element.md) |
-| [Hydrogen](https://github.com/vector-im/hydrogen-web) | x | Lightweight matrix client with legacy and mobile browser support | [Link](docs/configuring-playbook-client-hydrogen.md) |
+| [Hydrogen](https://github.com/element-hq/hydrogen-web) | x | Lightweight matrix client with legacy and mobile browser support | [Link](docs/configuring-playbook-client-hydrogen.md) |
 | [Cinny](https://github.com/ajbura/cinny) |  x | Simple, elegant and secure web client | [Link](docs/configuring-playbook-client-cinny.md) |
 | [SchildiChat](https://schildi.chat/) | x | Based on Element, with a more traditional instant messaging experience | [Link](docs/configuring-playbook-client-schildichat.md) |
 
@@ -63,7 +63,6 @@ Services that run on the server to make the various parts of your installation w
 | [PostgreSQL](https://www.postgresql.org/)| ✓ | Database for Synapse. [Using an external PostgreSQL server](docs/configuring-playbook-external-postgres.md) is also possible. | [Link](docs/configuring-playbook-external-postgres.md) |
 | [Coturn](https://github.com/coturn/coturn) | ✓ | STUN/TURN server for WebRTC audio/video calls | [Link](docs/configuring-playbook-turn.md) |
 | [Traefik](https://doc.traefik.io/traefik/) | ✓ | Web server, listening on ports 80, 443 and 8448 - standing in front of all the other services. Using your own webserver [is possible](docs/configuring-playbook-own-webserver.md) | [Link](docs/configuring-playbook-traefik.md) |
-| [nginx](http://nginx.org/) | x | (Deprecated) Web server, listening on ports 80, 443 and 8448 - standing in front of all the other services. Deprecated in favor of Traefik | [Link](docs/configuring-playbook-nginx.md) |
 | [Let's Encrypt](https://letsencrypt.org/) | ✓ | Free SSL certificate, which secures the connection to all components | [Link](docs/configuring-playbook-ssl-certificates.md) |
 | [ma1sd](https://github.com/ma1uta/ma1sd) | x | Matrix Identity Server | [Link](docs/configuring-playbook-ma1sd.md)
 | [Exim](https://www.exim.org/) | ✓ | Mail server, through which all Matrix services send outgoing email (can be configured to relay through another SMTP server) | [Link](docs/configuring-playbook-email.md) |
@@ -197,14 +196,6 @@ When updating the playbook, refer to [the changelog](CHANGELOG.md) to catch up w
 
 ## Related
 
-You may also be interested in these other Ansible playbooks:
+You may also be interested in [mash-playbook](https://github.com/mother-of-all-self-hosting/mash-playbook) - another Ansible playbook for self-hosting non-Matrix services (see its [List of supported services](https://github.com/mother-of-all-self-hosting/mash-playbook/blob/main/docs/supported-services.md)).
 
-- [gitea-docker-ansible-deploy](https://github.com/spantaleev/gitea-docker-ansible-deploy) - for deploying a [Gitea](https://gitea.io/) git version-control server
-
-- [nextcloud-docker-ansible-deploy](https://github.com/spantaleev/nextcloud-docker-ansible-deploy) - for deploying a [Nextcloud](https://nextcloud.com/) server
-
-- [peertube-docker-ansible-deploy](https://github.com/spantaleev/peertube-docker-ansible-deploy) - for deploying a [PeerTube](https://joinpeertube.org/) video-platform server
-
-- [vaultwarden-docker-ansible-deploy](https://github.com/spantaleev/vaultwarden-docker-ansible-deploy) - for deploying a [Vaultwarden](https://github.com/dani-garcia/vaultwarden) password manager server (unofficial [Bitwarden](https://bitwarden.com/) compatible server)
-
-They're all making use of Traefik as their reverse-proxy, so it should be easy to host all these services on the same server. Follow the `docs/configuring-playbook-interoperability.md` documentation in each playbook.
+mash-playbook also makes use of [Traefik](./docs/configuring-playbook-traefik.md) as its reverse-proxy, so with minor [interoperability adjustments](https://github.com/mother-of-all-self-hosting/mash-playbook/blob/main/docs/interoperability.md), you can make matrix-docker-ansible-deploy and mash-playbook co-exist and host Matrix and non-Matrix services on the same server.

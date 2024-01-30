@@ -2,12 +2,11 @@
 
 - tags:
     - setup-all
-    - setup-nginx-proxy
+    - setup-mautrix-signal
     - install-all
-    - install-nginx-proxy
+    - install-mautrix-signal
   block:
-    - when: matrix_mautrix_signal_enabled | bool and matrix_mautrix_signal_metrics_enabled | bool
-      ansible.builtin.include_tasks: "{{ role_path }}/tasks/inject_into_nginx_proxy.yml"
+    - ansible.builtin.include_tasks: "{{ role_path }}/tasks/remove_legacy.yml"
 
 - tags:
     - setup-all

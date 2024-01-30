@@ -1,14 +1,14 @@
 ---
-# Project source code URL: https://github.com/vector-im/hydrogen-web
+# Project source code URL: https://github.com/element-hq/hydrogen-web
 
 matrix_client_hydrogen_enabled: true
 
 matrix_client_hydrogen_container_image_self_build: false
-matrix_client_hydrogen_container_image_self_build_repo: "https://github.com/vector-im/hydrogen-web.git"
+matrix_client_hydrogen_container_image_self_build_repo: "https://github.com/element-hq/hydrogen-web.git"
 
-# renovate: datasource=docker depName=ghcr.io/vector-im/hydrogen-web
+# renovate: datasource=docker depName=ghcr.io/element-hq/hydrogen-web
 matrix_client_hydrogen_version: v0.4.1
-matrix_client_hydrogen_docker_image: "{{ matrix_client_hydrogen_docker_image_name_prefix }}vector-im/hydrogen-web:{{ matrix_client_hydrogen_version }}"
+matrix_client_hydrogen_docker_image: "{{ matrix_client_hydrogen_docker_image_name_prefix }}element-hq/hydrogen-web:{{ matrix_client_hydrogen_version }}"
 matrix_client_hydrogen_docker_image_name_prefix: "{{ 'localhost/' if matrix_client_hydrogen_container_image_self_build else 'ghcr.io/' }}"
 matrix_client_hydrogen_docker_image_force_pull: "{{ matrix_client_hydrogen_docker_image.endswith(':latest') }}"
 
@@ -16,7 +16,7 @@ matrix_client_hydrogen_data_path: "{{ matrix_base_data_path }}/client-hydrogen"
 matrix_client_hydrogen_docker_src_files_path: "{{ matrix_client_hydrogen_data_path }}/docker-src"
 
 # The base container network
-matrix_client_hydrogen_container_network: matrix-client-hydrogen
+matrix_client_hydrogen_container_network: ''
 
 # A list of additional container networks that the container would be connected to.
 # The role does not create these networks, so make sure they already exist.
@@ -125,14 +125,9 @@ matrix_client_hydrogen_floc_optout_enabled: true
 matrix_client_hydrogen_hsts_preload_enabled: false
 
 # The hostname at which Hydrogen is served.
-# Only works with with Traefik reverse-proxying.
-# For matrix-nginx-proxy, `matrix_server_fqn_hydrogen` is used and this variable has no effect.
 matrix_client_hydrogen_hostname: "{{ matrix_server_fqn_hydrogen }}"
 
 # The path at which Hydrogen is exposed.
-# When matrix-nginx-proxy is used, setting this to values other than `/` will cause configuration mismatches and trouble.
-#
-# If Traefik is used, the hostname is also configurable - see `matrix_client_hydrogen_container_labels_traefik_hostname`.
 # This value must either be `/` or not end with a slash (e.g. `/hydrogen`).
 matrix_client_hydrogen_path_prefix: /
 
